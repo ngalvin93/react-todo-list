@@ -7,9 +7,17 @@ const AddTodoInput = () => {
     )
 }
 
-const TodoItem = () => {
+const TodoItem = (props) => {
+    console.log('Item prop: ', props)
+    let isCompleteStatus = 'NOT COMPLETE'
+    if (props.isComplete) {
+        isCompleteStatus = 'COMPLETE'
+    }
     return (
-        <h1>TODO ITEM</h1>
+        <div>
+            <h1>{ props.item }</h1>
+            <p>{ isCompleteStatus }</p>
+        </div>
     )
 }
 
@@ -27,11 +35,14 @@ class TodoList extends React.Component {
         }]
     }
 
+    
+
     render() {
+        const singleTodoItem = this.state.items.map((item, idx) => <TodoItem key={idx} {...item}/>)
         return (
             <div>
                 <h1>TODO LIST</h1>
-                <TodoItem/>
+                { singleTodoItem }
             </div>
         )
     }
@@ -42,7 +53,7 @@ const App = () => {
     return (
         <div>
             <AddTodoInput />
-            <TodoList/>
+            <TodoList />
         </div>
     )
 }
