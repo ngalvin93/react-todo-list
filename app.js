@@ -1,21 +1,3 @@
-// const AddTodoInput = (props) => {
-//     const handleChange = (event) => {
-//         props.addItemToList(event.target.value)
-//     }
-//     const handleSubmit = (newItem) => {
-//         event.preventDefault()
-//     }
-//     return (
-//         <form onSubmit={ handleSubmit }>
-//             <label>
-//                 Add item:
-//                 <input name="addItem" type="text" onChange={ handleChange }></input>
-//             </label>
-//             <button type="submit" value="Submit">Add</button>
-//         </form>
-//     )
-// }
-
 const TodoItem = (props) => {
     let isCompleteStatus = 'NOT COMPLETE'
     let buttonStyle = "btn btn-outline-secondary"
@@ -25,12 +7,14 @@ const TodoItem = (props) => {
         buttonStyle = "btn btn-primary"
     }
 
-    const handleClick = () => props.markAsComplete(props.id)
+    const handleStatus = () => props.markAsComplete(props.id)
+    const handleRemove = () => props.removeItem(props.id)
     
     return (
         <div>
             <h4>{ props.item }</h4>
-            <button className={ buttonStyle } onClick={ handleClick }>{ isCompleteStatus }</button>
+            <button className = "btn btn-danger" onClick={ handleRemove }>X</button>
+            <button className={ buttonStyle } onClick={ handleStatus }>{ isCompleteStatus }</button>
         </div>
     )
 }
@@ -56,9 +40,13 @@ class App extends React.Component {
         this.setState({ state: stateCopy })
     }
 
+    removeItem = (itemId) => {
+        const stateCopy = [...this.state.items]
+        stateCopy.splice(itemId,1)
+        this.setState({ items: stateCopy })
+    }
+
     handleChange = (event) => {
-        // console.log('Change event: ', event.target.value)
-        // console.log('Event name: ', event.target.name)
         this.setState({
             [event.target.name]: event.target.value
         })
@@ -78,7 +66,7 @@ class App extends React.Component {
     }
     
     render() {
-        const singleTodoItem = this.state.items.map((item, idx) => <li key={idx}><TodoItem id={idx} {...item} markAsComplete={ this.markAsComplete } /></li>)
+        const singleTodoItem = this.state.items.map((item, idx) => <li key={idx}><TodoItem id={idx} {...item} markAsComplete={ this.markAsComplete } removeItem={ this.removeItem } /></li>)
         return (
             <div>
                 <form onSubmit={ this.handleSubmit }>
