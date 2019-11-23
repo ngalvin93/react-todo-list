@@ -19,11 +19,14 @@
 const TodoItem = (props) => {
     let isCompleteStatus = 'NOT COMPLETE'
     let buttonStyle = "btn btn-outline-secondary"
+
     if (props.isComplete) {
         isCompleteStatus = 'COMPLETE'
         buttonStyle = "btn btn-primary"
     }
+
     const handleClick = () => props.markAsComplete(props.id)
+    
     return (
         <div>
             <h4>{ props.item }</h4>
@@ -34,16 +37,14 @@ const TodoItem = (props) => {
 
 class App extends React.Component {
     state = {
+        term: '',
         items: [{
-            id: 0,
             item: 'Complete coding portfolio',
             isComplete: false
         },{
-            id: 1,
             item: 'Brainstorm ideas for React project',
             isComplete: false
         },{
-            id: 2,
             item: 'Review comments and make edits',
             isComplete: false
         }]
@@ -55,30 +56,35 @@ class App extends React.Component {
         this.setState({ state: stateCopy })
     }
 
+    handleChange = (event) => {
+        console.log('Change event: ', event.target.value)
+        console.log('Event name: ', event.target.name)
+        this.setState({
+            [event.target.name]: event.target.value
+        })
+    }
+
     handleSubmit = () => {
         event.preventDefault()
-    }
-
-    handleChange = (event) => {
-        const newItemObj = {
-            id: 3,
-            item: event.target.value,
-            isComplete: false
-        }
         const stateCopy = [...this.state.items]
-        stateCopy.push(newItemObj)
-        this.setState({items: stateCopy})
+        stateCopy.push({
+            item: this.state.term,
+            isComplete: false
+        })
+        this.setState({
+            term: '',
+            items: stateCopy
+        })
     }
     
-
     render() {
-        const singleTodoItem = this.state.items.map((item, idx) => <li key={idx}><TodoItem {...item} markAsComplete={ this.markAsComplete } /></li>)
+        const singleTodoItem = this.state.items.map((item, idx) => <li key={idx}><TodoItem id={idx} {...item} markAsComplete={ this.markAsComplete } /></li>)
         return (
             <div>
                 <form onSubmit={ this.handleSubmit }>
                     <label>
                     Add item:
-                    <input name="addItem" type="text" onChange={ this.handleChange }></input>
+                    <input name="term" type="text" onChange={ this.handleChange } value={ this.state.term }></input>
                     </label>
                     <button type="submit" value="Submit">Add</button>
                 </form>
