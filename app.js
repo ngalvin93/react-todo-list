@@ -57,8 +57,8 @@ class App extends React.Component {
     }
 
     handleChange = (event) => {
-        console.log('Change event: ', event.target.value)
-        console.log('Event name: ', event.target.name)
+        // console.log('Change event: ', event.target.value)
+        // console.log('Event name: ', event.target.name)
         this.setState({
             [event.target.name]: event.target.value
         })
@@ -86,7 +86,7 @@ class App extends React.Component {
                     Add item:
                     <input name="term" type="text" onChange={ this.handleChange } value={ this.state.term }></input>
                     </label>
-                    <button type="submit" value="Submit">Add</button>
+                    <button type="submit" value="Submit" className="btn btn-success">Add</button>
                 </form>
                 <h1>My todo list</h1>
                 <ul>
